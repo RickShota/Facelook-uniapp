@@ -1,6 +1,6 @@
 # 项目简介
 
-采用uni-app（vue2）开发的社区交友类app
+采用uni-app（vue2）开发的社区交友类app，临摹对象为Facebook
 
 # day1
 
