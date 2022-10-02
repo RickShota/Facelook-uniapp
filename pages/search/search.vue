@@ -1,31 +1,38 @@
 <template>
 	<view class="px-2">
 		<!-- 搜索历史 -->
-		<template  v-if="searchRes.length===0">
+		<template v-if="searchRes.length===0">
 			<view class="py-2 font-md">搜索历史</view>
 			<!-- 搜索历史标签 -->
 			<view class="flex flex-wrap">
 				<view class="border rounded font mx-2 my-1 px-1 text-color" hover-class="bg-light"
-					v-for="(item,index) in historyList" :key="index"
-					@click="searchEvent(item)">
+					v-for="(item,index) in historyList" :key="index" @click="searchEvent(item)">
 					{{item}}
 				</view>
 			</view>
 		</template>
 		<template v-else>
 			<!-- 搜索结果展示 -->
-				<block v-for="(item,index) in searchRes" :key="index">
-					<news-item
-						:item="item" 
-						:index="index">
-					</news-item>
-				</block>
+			<block v-for="(item,index) in searchRes" :key="index">
+				<template v-if="searchType==='user'">
+					<friends-item :item="item" :index="index"></friends-item>
+				</template>
+				<template v-else-if="searchType==='topic'">
+					<topic-item :item="item" :index="index"></topic-item>
+				</template>
+				<template v-else-if="searchType==='facelook'">
+					<view style="height: 50rpx;width: 100%;text-align: center;line-height: 50rpx;">无搜索结果</view>
+				</template>
+				<template v-else>
+					<news-item :item="item" :index="index"></news-item>
+				</template>
+			</block>
 		</template>
 	</view>
 </template>
 
 <script>
-	const demo = [{
+	const newsData = [{
 			username: "昵称1",
 			userpic: "/static/default/defUser.png",
 			newstime: "2020-05-24 上午 11:31",
@@ -86,14 +93,114 @@
 			share_num: 4,
 		},
 	];
-	import newsItem from '@/components/common/news-item.vue'
+	
+	const userData = [{
+			avatar: "/static/default/defUser.png",
+			username: "赵丽颖",
+			sex: 1,
+			age: 26,
+			isFollow: true
+		},
+		{
+			avatar: "/static/default/defUser.png",
+			username: "男爵",
+			sex: 2,
+			age: 14,
+			isFollow: false
+		}, {
+			avatar: "/static/default/defUser.png",
+			username: "赵丽颖",
+			sex: 1,
+			age: 26,
+			isFollow: true
+		},
+		{
+			avatar: "/static/default/defUser.png",
+			username: "男爵",
+			sex: 2,
+			age: 14,
+			isFollow: false
+		}, {
+			avatar: "/static/default/defUser.png",
+			username: "赵丽颖",
+			sex: 1,
+			age: 26,
+			isFollow: true
+		},
+		{
+			avatar: "/static/default/defUser.png",
+			username: "男爵",
+			sex: 2,
+			age: 14,
+			isFollow: false
+		}
+	];
+	
+	const AllData = []
+	const topicData = [{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+
+		{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+		{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+		{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+		{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+		{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+		{
+			cover: "/static/demo/topicpic/1.jpeg",
+			title: "话题名称",
+			desc: "话题描述",
+			today_count: 0,
+			news_count: 10,
+		},
+	];
+
+	import newsItem from '@/components/common/news-item.vue';
+	import topicItem from '@/components/common/topic-item.vue';
+	import friendsItem from '@/components/common/friends-item.vue';
 	export default {
 		components: {
-			newsItem
+			newsItem,
+			topicItem,
+			friendsItem
 		},
 		data() {
 			return {
-				// 伪造数据
+				// 伪造历史记录数据
 				historyList: [
 					'羊了个羊',
 					'iPhone 14灵动岛',
@@ -104,47 +211,89 @@
 					'U型锁',
 					'杭电'
 				],
-				searchRes: [],
-				text:''
+				searchRes: [], // 搜索结果
+				text: '', // 搜索内容
+				searchType: '' // 搜索类型
 			}
 		},
-		// 搜索框文本变化生命周期
+		// 窗口加载钩子函数
+		onLoad(e) {
+			if (e.type) this.searchType = e.type
+			let pageTitle = ''
+			switch (this.searchType) {
+				case 'user':
+					pageTitle = '搜索用户'
+					break;
+				case 'topic':
+					pageTitle = '搜索话题'
+					break;
+				case 'facelook':
+					pageTitle = '在Facelook中搜索'
+					break;
+				default:
+					pageTitle = '搜索帖子'
+			}
+			// 动态修改导航栏搜索框占位符
+			// #ifdef APP-PLUS
+			let currentWebview = this.$mp.page.$getAppWebview()
+			let tn = currentWebview.getStyle().titleNView
+			tn.searchInput.placeholder = pageTitle
+			currentWebview.setStyle({
+				titleNView: tn
+			})
+			// #endif
+
+		},
+		// 监听搜索框文本变化
 		onNavigationBarSearchInputChanged(e) {
 			this.text = e.text
 			// 如果搜索框被清空,则同步清空searchRes
-			if(this.text===''){
-				this.searchRes=[]
+			if (this.text === '') {
+				this.searchRes = []
 			}
 		},
-		// 点击搜索按钮生命周期
+		// 用户点击软键盘上的“搜索”按钮时触发
 		onNavigationBarSearchInputConfirmed(e) {
 			this.searchEvent(this.text)
 		},
+		// 监听原生标题栏按钮点击事件
 		onNavigationBarButtonTap(e) {
 			if (e.index === 0) {
 				this.searchEvent(this.text)
 			}
 		},
 		methods: {
-			// 搜索回调函数
+			// 搜索事件
 			searchEvent(text) {
 				console.log(text);
 				// 收起键盘
 				uni.hideKeyboard()
 				// 放入历史记录
-				if(!this.historyList.includes(text)){
+				if (!this.historyList.includes(text)) {
 					this.historyList.unshift(text)
 				}
 				// 开启loading加载
 				uni.showLoading({
-					title:'加载中...',
-					mask:false
+					title: '加载中...',
+					mask: false
 				})
 				// 请求数据
 				setTimeout(() => {
 					// 关闭loading加载
 					uni.hideLoading()
-					this.searchRes = demo
+					switch (this.searchType) {
+						case 'user':
+							this.searchRes = userData
+							break;
+						case 'topic':
+							this.searchRes = topicData
+							break;
+						case 'facelook':
+							this.searchRes = [1]
+							break;
+						default:
+							this.searchRes = newsData
+					}
 				}, 1500)
 			},
 		}

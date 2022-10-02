@@ -1,17 +1,16 @@
 {
   "description": "项目配置文件。",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
   "setting": {
     "urlCheck": false,
     "es6": false,
     "postcss": false,
-    "minified": false,
+    "minified": true,
     "newFeature": true,
     "bigPackageSizeSupport": true,
-    "coverView": false,
-    "enhance": false,
-    "showShadowRootInWxmlPanel": false,
-    "packNpmRelationList": [],
-    "ignoreUploadUnusedFiles": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -19,15 +18,12 @@
     }
   },
   "compileType": "miniprogram",
+  "libVersion": "2.26.0",
+  "appid": "wxdca30822f3f5f2a3",
+  "projectname": "FaceLook",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  },
-  "libVersion": "2.26.0",
-  "packOptions": {
-    "ignore": [],
-    "include": []
-  },
-  "appid": "wxb68bb9da1e7e2f30"
+  }
 }

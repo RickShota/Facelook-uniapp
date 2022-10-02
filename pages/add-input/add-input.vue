@@ -2,34 +2,29 @@
 	<view>
 		<!-- 自定义导航栏组件 -->
 		<uni-nav-bar statusBar @clickLeft="back" @clickRight="send" backgroundColor="#f0f2f5" left-icon="closeempty"
-			title="创建帖子" right-text="发帖">
+			fixed="true" title="创建帖子">
 		</uni-nav-bar>
+
 		<view style="padding: 20rpx;">
 			<!-- 用户信息 -->
 			<view class="userInfo">
 				<view style="display: flex;align-items: center;">
 					<!-- 头像 -->
-					<image class="rounded-circle mr-2" src="/static/default/defUser.png">
-						<!-- 昵称 -->
-						<view>
-							<view class="name">Rick Henry</view>
-							<text class="font-small text-light-muted">#所有人</text>
-						</view>
+					<image class="rounded-circle mr-2" src="/static/default/userImg.jpg" />
+					<!-- 昵称 -->
+					<view>
+						<view class="name">Rick Henry</view>
+						<text class="font-small text-light-muted">#所有人</text>
+					</view>
+					<!-- 发布按钮 -->
+					<view class="send-btn">发布</view>
 				</view>
 			</view>
 			<!-- 输入框 -->
 			<textarea class="editBox" placeholder="分享一下你的新鲜事吧" v-model="text"></textarea>
 			<!-- 第三方插件：图片选择器 -->
-			<uni-file-picker
-				v-show="imageList.length>0"
-				ref="choosePic"
-				v-model="imageList"
-				fileMediatype="image" 
-				mode="grid" 
-				@select="select"
-				@progress="progress" 
-				@success="success" 
-				@fail="fail" />
+			<uni-file-picker v-show="imageList.length>0" ref="choosePic" v-model="imageList" fileMediatype="image"
+				mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" />
 		</view>
 		<!-- 底部操作条 -->
 		<view class="bottomBar">
@@ -46,10 +41,13 @@
 	import uniNavBar from '@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue'
 	import uniFilePicker from '@/uni_modules/uni-file-picker/components/uni-file-picker/uni-file-picker.vue'
 	export default {
+		components: {
+			uniNavBar
+		},
 		data() {
 			return {
 				text: '',
-				imageList:[], // 图片缓存地址
+				imageList: [], // 图片缓存地址
 			}
 		},
 		// 页面启动时钩子函数
@@ -60,9 +58,9 @@
 		onLoad() {
 			// 还原草稿
 			uni.getStorage({
-				key:'add-input',
+				key: 'add-input',
 				success: (res) => {
-					if(res.data){ // 如果有值
+					if (res.data) { // 如果有值
 						let result = JSON.parse(res.data)
 						this.text = result.content
 						this.imageList = result.imageList
@@ -90,28 +88,28 @@
 			// 返回按钮
 			back() {
 				// 保存草稿功能
-				if(this.text!==''|| this.imageList.length>0){
+				if (this.text !== '' || this.imageList.length > 0) {
 					uni.showModal({
-						content:'是否保存为草稿？',
-						showCancel:true,
-						cancelText:'不保存',
-						confirmText:'保存',
+						content: '是否保存为草稿？',
+						showCancel: true,
+						cancelText: '不保存',
+						confirmText: '保存',
 						success: (res) => {
-							if(res.confirm) {
+							if (res.confirm) {
 								this.saveStore() // 存
-							}else{
+							} else {
 								// 返回上页
 								uni.navigateBack({
 									animationType: 'slide-out-bottom' // 返回动画：从底部滑出
 								})
 								// 清楚缓存
 								uni.removeStorage({
-									key:"add-input"
+									key: "add-input"
 								})
 							}
 						}
 					})
-				}else{
+				} else {
 					uni.navigateBack({
 						animationType: 'slide-out-bottom'
 					})
@@ -122,14 +120,14 @@
 				console.log("发送内容：", this.text, this.imageList);
 			},
 			// 保存草稿
-			saveStore(){
+			saveStore() {
 				let obj = {
 					content: this.text,
 					imageList: this.imageList
 				}
 				uni.setStorage({
-					key:'add-input',
-					data:JSON.stringify(obj)
+					key: 'add-input',
+					data: JSON.stringify(obj)
 				})
 			},
 			checkImg() {
@@ -176,6 +174,15 @@
 		text {
 			color: #9d9589;
 			line-height: 0.5;
+		}
+		.send-btn{
+			background-color: #1676f1;
+			color: #fff;
+			font-size: 30rpx;
+			padding: 10rpx 20rpx;
+			border-radius: 10rpx;
+			position: fixed;
+			right: 30rpx;
 		}
 	}
 

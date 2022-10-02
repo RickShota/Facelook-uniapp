@@ -272,7 +272,8 @@
 		/* #ifndef APP-NVUE */
 		display: flex;
 		/* #endif */
-		width: 120rpx;
+		width: 300rpx;
+		flex: 1;
 		justify-content: flex-start;
 		align-items: center;
 	}
@@ -282,8 +283,9 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
-		// width: 150rpx;
-		// padding-right: 30rpx;
+		flex: 1;
+		width: 150rpx;
+		padding-right: 30rpx;
 		justify-content: flex-end;
 		align-items: center;
 	}

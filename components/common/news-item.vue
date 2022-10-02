@@ -1,5 +1,5 @@
 <template>
-		<view class="item">
+		<view class="item animated fast fadeIn">
 			<!-- 头像|昵称|关注 -->
 			<view class="userImg">
 				<view style="display: flex;align-items: center;">
@@ -51,16 +51,38 @@
 					<text style="margin-left: 20rpx;" v-if="item.support.unsupport_count==0">踩</text>
 					<text style="margin-left: 20rpx;" v-else>{{item.support.unsupport_count}}</text>
 				</view>
-				<view class="binf" hover-class="text-main" @click="doSupport('comment')">
-					<text class="iconfont icon-pinglun"></text>
+				<view class="binf" hover-class="text-main" @click="comment">
+					<uni-icons type="chat" size="24"></uni-icons>
 					<text style="margin-left: 20rpx;" v-if="item.comment_count==0">评论</text>
 					<text style="margin-left: 20rpx;" v-else>{{item.comment_count}}</text>
 				</view>
-				<view class="binf" hover-class="text-main" @click="doSupport('share')">
-					<text class="iconfont icon-fenxiang"></text>
+				<view class="binf" hover-class="text-main" @click="share">
+					<uni-icons type="redo" size="24"></uni-icons>
 					<text style="margin-left: 20rpx;">分享</text>
 				</view>
 			</view>
+			<!-- 弹出层第三方组件 -->
+			<uni-popup ref="popup" type="bottom">
+				<view class="text-center py-2 font-md border-bottom" style="background-color: white;">分享到</view>
+				<view class="flex align-center" style="background-color: white;">
+					<view class="flex-1 flex flex-column align-center justify-center py-2">
+						<view class="iconfont icon-xinlang" style="font-size: 80rpx;color: #e89213;"></view>
+						<text class="font-sm mt-1 text-muted">新浪微博</text>
+					</view>
+					<view class="flex-1 flex flex-column align-center justify-center py-2">
+						<view class="iconfont icon-QQ" style="font-size: 80rpx;color: #1d8ac9;"></view>
+						<text class="font-sm mt-1 text-muted">QQ好友</text>
+					</view>
+					<view class="flex-1 flex flex-column align-center justify-center py-2">
+						<view class="iconfont icon-weichat" style="font-size: 80rpx;color: #2d9a4f;"></view>
+						<text class="font-sm mt-1 text-muted">微信好友</text>
+					</view>
+					<view class="flex-1 flex flex-column align-center justify-center py-2">
+						<view class="iconfont icon-zhifubao" style="font-size: 80rpx;color: #259dd7;"></view>
+						<text class="font-sm mt-1 text-muted">支付宝好友</text>
+					</view>
+				</view>
+			</uni-popup>
 		</view>
 </template>
 
@@ -72,6 +94,7 @@
 			item:Object,
 			index:Number,
 		},
+		
 		methods: {
 			openSpace() {
 				console.log("个人空间");
@@ -80,13 +103,24 @@
 				this.$emit('follow',this.index);
 			},
 			openDetail(){
-				console.log("详情");
+				uni.navigateTo({
+					url: '../../pages/news-detail/news-detail?detail='+JSON.stringify(this.item)
+				});
 			},
+			// 顶踩
 			doSupport(type){
-				this.$emit('doSupport',{
+				this.$emit('doSupport',{ // 自定义事件
 					type:type,
 					index:this.index
 				})
+			},
+			// 评论
+			comment(){
+				this.openDetail()
+			},
+			// 分享
+			share(){
+				this.$refs.popup.open()
 			}
 		},
 	}

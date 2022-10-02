@@ -353,7 +353,8 @@
 		justify-content: center;
 	}
 	.uni-list-item__content-title {
-		font-size: $uni-font-size-base;
+		// font-size: $uni-font-size-base;
+		font-size: 30rpx;
 		color: #3b4144;
 		overflow: hidden;
 	}
@@ -425,7 +426,8 @@
 	}
 	.uni-list-item__extra-text {
 		color: $uni-text-color-grey;
-		font-size: $uni-font-size-sm;
+		// font-size: $uni-font-size-sm;
+		font-size: 30rpx;
 	}
 	.uni-ellipsis-1 {
 		/* #ifndef APP-NVUE */

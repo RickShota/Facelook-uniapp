@@ -1,5 +1,5 @@
 <template>
-	<view class="p-2 flex align-center border-bottom border-light-secondary " hover-class="bg-light">
+	<view class="p-2 flex align-center border-bottom border-light-secondary  animated fast fadeIn " hover-class="bg-light">
 		<!-- 头像 -->
 		<image style="height: 80rpx; width: 80rpx;" class="rounded-circle mr-2" :src="item.avatar" mode=""></image>
 		<view class="flex flex-1 theflex">

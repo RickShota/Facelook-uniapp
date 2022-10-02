@@ -1,0 +1,74 @@
+.user.data-v-80842834 {
+  padding: 20rpx 30rpx;
+  position: relative;
+}
+.user .bg.data-v-80842834 {
+  height: 450rpx;
+}
+.user .bg .bgImg.data-v-80842834 {
+  width: 100%;
+  height: 350rpx;
+  border-radius: 20rpx 20rpx 0 0;
+}
+.user .bg .userImg.data-v-80842834 {
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  border: 10rpx solid #fff;
+  position: absolute;
+  top: 175rpx;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+}
+.user .userName.data-v-80842834 {
+  height: 70rpx;
+  font-size: 40rpx;
+  font-weight: bold;
+  text-align: center;
+}
+.user .btns.data-v-80842834 {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20rpx;
+}
+.user .btns view.data-v-80842834 {
+  width: 47%;
+  height: 65rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  line-height: 65rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+.user .btns .send-new.data-v-80842834 {
+  background-color: #1b74e4;
+  color: #fff;
+}
+.user .btns .send.data-v-80842834 {
+  background-color: #155db4;
+  color: #e2e2e2;
+}
+.user .btns .edit-info.data-v-80842834 {
+  background-color: #e4e6eb;
+}
+.user .btns .edit.data-v-80842834 {
+  background-color: #c6c7cb;
+}
+.user .tap-title.data-v-80842834 {
+  color: #707070;
+  font-size: 30rpx;
+  margin: 20rpx;
+}
+.user .taps.data-v-80842834 {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.user .taps .tap-item.data-v-80842834 {
+  padding: 10rpx 20rpx;
+  margin: 10rpx;
+  border-radius: 30rpx;
+  background-color: #e4e6eb;
+}
+

@@ -1,0 +1,10 @@
+(global["webpackJsonp"]=global["webpackJsonp"]||[]).push([["components/common/news-item"],{"3b6f":function(n,e,t){"use strict";t.d(e,"b",(function(){return i})),t.d(e,"c",(function(){return u})),t.d(e,"a",(function(){return o}));var o={uniIcons:function(){return Promise.all([t.e("common/vendor"),t.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(t.bind(null,"7814"))},uniPopup:function(){return t.e("uni_modules/uni-popup/components/uni-popup/uni-popup").then(t.bind(null,"eab8"))}},i=function(){var n=this,e=n.$createElement;n._self._c},u=[]},"4d08":function(n,e,t){"use strict";t.r(e);var o=t("62fa"),i=t.n(o);for(var u in o)"default"!==u&&function(n){t.d(e,n,(function(){return o[n]}))}(u);e["default"]=i.a},"56e0":function(n,e,t){"use strict";t.r(e);var o=t("3b6f"),i=t("4d08");for(var u in i)"default"!==u&&function(n){t.d(e,n,(function(){return i[n]}))}(u);t("f5d5");var c,a=t("f0c5"),f=Object(a["a"])(i["default"],o["b"],o["c"],!1,null,"d18cb714",null,!1,o["a"],c);e["default"]=f.exports},"62fa":function(n,e,t){"use strict";(function(n){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var t={name:"newsItem",props:{item:Object,index:Number},methods:{openSpace:function(){console.log("个人空间")},follow:function(n){this.$emit("follow",this.index)},openDetail:function(){n.navigateTo({url:"../../pages/news-detail/news-detail?detail="+JSON.stringify(this.item)})},doSupport:function(n){this.$emit("doSupport",{type:n,index:this.index})},comment:function(){this.openDetail()},share:function(){this.$refs.popup.open()}}};e.default=t}).call(this,t("543d")["default"])},a6ce:function(n,e,t){},f5d5:function(n,e,t){"use strict";var o=t("a6ce"),i=t.n(o);i.a}}]);
+;(global["webpackJsonp"] = global["webpackJsonp"] || []).push([
+    'components/common/news-item-create-component',
+    {
+        'components/common/news-item-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('543d')['createComponent'](__webpack_require__("56e0"))
+        })
+    },
+    [['components/common/news-item-create-component']]
+]);

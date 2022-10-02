@@ -1,6 +1,6 @@
 <template>
-	<view class="flex align-center border-bottom border-light-secondary" hover-class="bg-light"
-		style="padding: 10rpx 0 10rpx;height: 100rpx;">
+	<view class="flex align-center border-bottom border-light-secondary animated fast fadeIn" hover-class="bg-light"
+		style="padding: 10rpx 0 10rpx;height: 100rpx;" @click="open">
 		<!-- 头像 -->
 		<image :src="item.avatar" class="rounded-circle mr-2" style="height: 85rpx;width: 85rpx;">
 		</image>
@@ -33,6 +33,14 @@
 			item: Object,
 			index: Number
 		},
+		computed:{
+			username(){
+				return this.item.username
+			}
+		},
+		onLoad() {
+			
+		},
 		// 过滤器
 		filters: {
 			formatTime(value) {
@@ -40,11 +48,10 @@
 			}
 		},
 		methods: {
-			// 打开聊天页
 			open() {
+				// 打开聊天页
 				uni.navigateTo({
-					// url: '../../pages/user-chat/user-chat',
-
+					url: "../../pages/chat-page/chat-page?username="+this.username,
 				});
 			}
 		}

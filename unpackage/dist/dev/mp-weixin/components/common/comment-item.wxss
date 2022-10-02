@@ -1,0 +1,35 @@
+.comment-item.data-v-7b931c0c {
+  padding: 20rpx;
+}
+.comment-item .h.data-v-7b931c0c {
+  display: flex;
+  align-items: center;
+}
+.comment-item .h image.data-v-7b931c0c {
+  width: 60rpx;
+  height: 60rpx;
+}
+.comment-item .h .user-name.data-v-7b931c0c {
+  flex: 1;
+  font-size: 30rpx;
+}
+.comment-item .b.data-v-7b931c0c {
+  padding: 0 40rpx 20rpx 80rpx;
+}
+.comment-item .t.data-v-7b931c0c {
+  display: flex;
+  align-items: center;
+  padding: 0 40rpx 0 80rpx;
+}
+.comment-item .t .cb.data-v-7b931c0c {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 5rpx 20rpx;
+  font-size: 20rpx;
+}
+.comment-item .t .time.data-v-7b931c0c {
+  margin-left: 20rpx;
+  font-size: 20rpx;
+  color: #b0b0b0;
+}
+

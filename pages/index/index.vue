@@ -1,18 +1,28 @@
 <template>
 	<!-- 首页 -->
 	<view class="content">
+		<!-- #ifdef MP-WEIXIN -->
+		<uni-nav-bar statusBar fixed="true">
+			<template v-slot:left>
+				<view class="logo-text">facelook</view>
+			</template>
+			<template v-slot:right>
+				<view class="iconfont icon-huati search-btn" @click="gotoTopic"></view>
+			</template>
+		</uni-nav-bar>
+		<!-- #endif -->
 		<scroll-view scroll-y @scrolltolower="loadmore()" :style="'height:' + scrollH + 'px;'">
 			<template v-if="newsList.length>0">
 				<!-- 分享新鲜事 -->
 				<view class="shareNews" @click="shareNews">
 					<view style="display: flex;align-items: center;">
 						<!-- 头像 -->
-						<image class="rounded-circle mr-2" src="/static/default/defUser.png">
-						<!-- 昵称 -->
-						<view>
-							<text class="font">分享一下你的新鲜事吧</text>
-						</view>
-						<view class="iconfont icon-dongtai icon"></view>
+						<image class="rounded-circle mr-2" src="/static/default/userImg.jpg">
+							<!-- 昵称 -->
+							<view>
+								<text class="font">分享一下你的新鲜事吧</text>
+							</view>
+							<view class="iconfont icon-dongtai icon"></view>
 					</view>
 				</view>
 				<!-- 文章列表 -->
@@ -34,13 +44,17 @@
 </template>
 
 <script>
+	// #ifdef MP-WEIXIN
+	import uniNavBar from '@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue'
+	// #endif
 	const fakeData = [{
-			username: "昵称1",
+			username: "Assassin~雷古",
 			userpic: "/static/default/defUser.png",
-			newstime: "2020-05-24 上午 11:31",
+			newstime: "2022-05-24 上午 11:31",
 			isFollow: false,
-			title: "这是一个标题",
+			title: "马上就要到圣诞节了，提前祝大家圣诞快乐！",
 			titlepic: "/static/demo/banner1.jpg",
+			content: "",
 			support: {
 				type: "support",
 				support_count: 123,
@@ -50,11 +64,11 @@
 			share_num: 2,
 		},
 		{
-			username: "昵称2",
+			username: "违规用户",
 			userpic: "/static/default/defUser.png",
 			newstime: "2020-05-24 上午 11:31",
 			isFollow: true,
-			title: "这是一个标题2",
+			title: "为什么，啊啊啊，真的服了",
 			titlepic: "",
 			support: {
 				type: "unsupport",
@@ -70,7 +84,7 @@
 			newstime: "2020-05-24 上午 11:31",
 			isFollow: false,
 			title: "这是一个标题2",
-			titlepic: "/static/demo/banner3.jpg",
+			titlepic: "/static/demo/demo2.jpg",
 			support: {
 				type: "",
 				support_count: 1,
@@ -100,7 +114,10 @@
 	export default {
 		components: {
 			newsItem,
-			loadMore
+			loadMore,
+			// #ifdef MP-WEIXIN
+			uniNavBar
+			// #endif
 		},
 		data() {
 			return {
@@ -114,23 +131,16 @@
 		},
 		// 监听导航栏搜索按钮
 		onNavigationBarButtonTap(e) {
-			// e.index = 0为聊天，1为搜索
 			if (e.index === 1) {
 				uni.navigateTo({
-					url: '../search/search',
+					url: '../search/search', // 搜索
 					animationType: 'fade-in',
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
 				});
 			} else {
-				uni.navigateTo({
-					url: '../session-list/session-list',
-					animationType: 'slide-in-right',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
-				});
+				this.gotoTopic()
 			}
 
 		},
@@ -143,11 +153,20 @@
 					}
 				}),
 				this.getData()
-				
 		},
 		methods: {
+			// 前往话题页
+			gotoTopic(){
+				uni.navigateTo({
+					url: '../topic/topic', // 话题
+					animationType: 'slide-in-right',
+					success: res => {},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
 			// 发动态
-			shareNews(){
+			shareNews() {
 				uni.navigateTo({
 					url: '../add-input/add-input',
 					animationType: 'slide-in-bottom',
@@ -164,7 +183,7 @@
 			onfollow(e) {
 				this.newsList[e].isFollow = !this.newsList[e].isFollow;
 			},
-			// 顶踩e
+			// 顶踩
 			doSupport(e) {
 				let item = this.newsList[e.index];
 				if (item.support.support_count >= 0 && item.support.unsupport_count >= 0) {
@@ -214,6 +233,15 @@
 </script>
 
 <style scoped lang="less">
+	.logo-text {
+		color: #1b74e3;
+		font-size: 50rpx;
+		font-weight: bold;
+	}
+  .search-btn{
+		margin-right: 150rpx;
+		font-size: 50rpx;
+	}
 	.shareNews {
 		display: flex;
 		align-items: center;
@@ -229,7 +257,8 @@
 		text {
 			line-height: 0.5;
 		}
-		.icon{
+
+		.icon {
 			font-size: 40rpx;
 			font-weight: bold;
 			position: absolute;

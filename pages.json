@@ -7,6 +7,7 @@
 				"navigationBarTitleText": "facelook",
 				"enablePullDownRefresh": false, // 下拉刷新
 				"backgroundColor": "#eee",
+				// App平台特定样式
 				"app-plus": {
 					// 导航栏
 					"titleNView": {
@@ -14,18 +15,17 @@
 						"titleSize": "50rpx",
 						"titleAlign": "left",
 						"splitLine": true,
-						"buttons": [{
+						"buttons": [{ // 话题
 								"color": "#000",
 								"colorPressed": "#1676f1",
 								"background": "#e4e6eb",
 								"float": "right",
-								"fontSize": "50rpx",
-								"fontWeight": "bold",
+								"fontSize": "55rpx",
 								"fontSrc": "/static/icon/iconfont.ttf",
-								"text": "\ue741",
+								"text": "\ue8b1",
 								"width": "50px"
 							},
-							{
+							{ // 搜索
 								"color": "#000",
 								"colorPressed": "#1676f1",
 								"background": "#e4e6eb",
@@ -38,61 +38,13 @@
 							}
 						]
 					}
+				},
+				"mp-weixin": {
+					"navigationStyle":"custom"// 禁用微信原生导航栏
 				}
 			}
-		}, {
-			// 动态
-			"path": "pages/news/news",
-			"style": {
-				"navigationBarTitleText": "动态",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					// 导航栏
-					"titleNView": {
-						"titleSize": "50rpx",
-						"titleAlign": "left",
-						"buttons": [{
-							"color": "#000",
-							"colorPressed": "#1676f1",
-							"background": "#e4e6eb",
-							"float": "right",
-							"fontSize": "40rpx",
-							"fontWeight": "bold",
-							"fontSrc": "/static/icon/iconfont.ttf",
-							"text": "\ue730",
-							"width": "50px"
-						}]
-					}
-				}
-			}
-
-		}, {
-			// 通知
-			"path": "pages/msg/msg",
-			"style": {
-				"navigationBarTitleText": "通知",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					// 导航栏
-					"titleNView": {
-						"titleSize": "50rpx",
-						"titleAlign": "left",
-						"buttons": [{ // 联系人
-							"color": "#000",
-							"colorPressed": "#1676f1",
-							"background": "#e4e6eb",
-							"float": "right",
-							"fontSize": "50rpx",
-							"fontSrc": "/static/icon/iconfont.ttf",
-							"text": "\ue6e2",
-							"width": "50px"
-						}]
-					}
-				}
-			}
-
-		}, {
-			// 我的
+		},{
+			// 个人主页
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "我的主页",
@@ -122,6 +74,71 @@
 			}
 
 		}, {
+			// 动态页
+			"path": "pages/news/news",
+			"style": {
+				"navigationBarTitleText": "动态",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					// 导航栏
+					"titleNView": {
+						"titleSize": "40rpx",
+						"titleAlign": "left",
+						"buttons": [{
+							"color": "#000",
+							"colorPressed": "#1676f1",
+							"background": "#e4e6eb",
+							"float": "right",
+							"fontSize": "40rpx",
+							"fontWeight": "bold",
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"text": "\ue730",
+							"width": "50px"
+						}]
+					}
+				},
+				"mp-weixin": {
+					"navigationStyle":"custom"// 禁用微信原生导航栏
+				}
+			}
+
+		}, {
+			// 通知页
+			"path": "pages/msg/msg",
+			"style": {
+				"navigationBarTitleText": "通知",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					// 导航栏
+					"titleNView": {
+						"titleSize": "40rpx",
+						"titleAlign": "left",
+						"buttons": [{ // 联系人
+							"color": "#000",
+							"colorPressed": "#1676f1",
+							"background": "#e4e6eb",
+							"float": "right",
+							"fontSize": "55rpx",
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"text": "\ue6e2",
+							"width": "50px"
+						}, { // 清理
+							"color": "#000",
+							"colorPressed": "#1676f1",
+							"background": "#e4e6eb",
+							"float": "right",
+							"fontSize": "45rpx",
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"text": "\ue6fe",
+							"width": "50px"
+						}]
+					}
+				},
+				"mp-weixin": {
+					"navigationStyle":"custom"// 禁用微信原生导航栏
+				}
+			}
+		},  {
 			// 搜索页
 			"path": "pages/search/search",
 			"style": {
@@ -154,8 +171,12 @@
 			"path": "pages/add-input/add-input",
 			"style": {
 				"app-plus": {
-					"titleNView": false, // 自定义导航
+					"titleNView": false, // 禁用App原生导航栏
 					"softinputMode": "adjustResize"
+				},
+				"mp-weixin": {
+					"navigationStyle":"custom",// 禁用微信原生导航栏
+					"homeButton":"true"
 				}
 			}
 		}, { // 菜单
@@ -192,13 +213,16 @@
 							"width": "50px"
 						}]
 					}
+				},
+				"mp-weixin": {
+					"navigationStyle":"custom"// 禁用微信原生导航栏
 				}
 			}
-		}, { // 会话列表
+		}, { // 聊天列表
 			"path": "pages/session-list/session-list",
 			"style": {
 				"navigationBarTitleText": "聊天",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": true, //下拉刷新
 				"app-plus": {
 					"titleNView": {
 						"autoBackButton": true, // 左侧返回按钮
@@ -256,22 +280,95 @@
 					}
 				}
 			}
+		}, {
+			// 话题页
+			"path": "pages/topic/topic",
+			"style": {
+				"navigationBarTitleText": "话题",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			// 更多话题列表
+			"path": "pages/topic-list/topic-list",
+			"style": {
+				"navigationBarTitleText": "话题分类",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			// 聊天页
+			"path": "pages/chat-page/chat-page",
+			"style": {
+				"navigationBarTitleText": "聊天",
+				"app-plus": {
+					"softinputMode": "adjustResize",
+					"titleNView": {
+						"splitLine": {
+							"color": "#e4e5e4",
+							"height": "1px"
+						},
+						"buttons": [{
+							"color": "#333333",
+							"colorPressed": "#1676f1",
+							"float": "right",
+							"fontSize": "20px",
+							"fontSrc": "/static/icon/iconfont.ttf",
+							"text": "\ue615"
+						}]
+					}
+				}
+			}
+		}, {
+			// 帖子详情页
+			"path": "pages/news-detail/news-detail",
+			"style": {
+				"navigationBarTitleText": "facelook",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#1676f1",
+						"titleSize": "40rpx",
+						"titleAlign": "center",
+						"splitLine": true,
+						"buttons": [{ // 更多按钮
+							"color": "#333333",
+							"colorPressed": "#1676f1",
+							"type": "menu",
+							"float": "right"
+						}]
+					}
+				}
+			}
 
+		}, {
+			// 编辑资料页
+			"path": "pages/user-userInfo/user-userInfo",
+			"style": {
+				"navigationBarTitleText": "编辑资料",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			// 登录页
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "black", // 导航栏标题颜色
 		"navigationBarTitleText": "facelook",
 		"navigationBarBackgroundColor": "#ffffff",
 		"backgroundColor": "#ffffff",
-		"type": "transparent"
+		"dynamicRpx": true // 动态 rpx，屏幕大小变化会重新渲染 rpx
 	},
 	// 底部导航栏
 	"tabBar": {
 		"color": "#2b2b2b",
-		"selectedColor": "#050505",
+		"selectedColor": "#1676f1",
 		"backgroundColor": "#ffffff",
-		"borderStyle": "#e5e5e5",
+		"borderStyle": "black",
 		"list": [{
 				"pagePath": "pages/index/index",
 				"text": "首页",

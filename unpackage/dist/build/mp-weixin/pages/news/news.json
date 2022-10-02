@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "动态",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uni-nav-bar": "/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar",
+    "news-item": "/components/common/news-item",
+    "load-more": "/components/common/load-more"
+  }
+}

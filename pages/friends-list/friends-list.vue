@@ -3,10 +3,10 @@
 		<!-- tabBar -->
 		<view class=" flex align-center " style="height: 100rpx;">
 			<view class="flex-1 flex align-center justify-center " v-for="(item, index) in tabBars" :key="index"
-				:class="index === tabIndex ? 'font-lg text-main font-weight-bold ' : 'font-md '"
+				:class="index === tabIndex ? 'font-md text-main font-weight-bold ' : 'font'"
 				@click="changeTab(index)">
 				{{ item.name }}
-				<text class="ml-2" v-if="item.mun > 0">{{ item.mun }}</text>
+				<text class="ml-2 font" v-if="item.mun > 0">{{ item.mun }}</text>
 			</view>
 		</view>
 		<!-- 列表 -->
@@ -33,6 +33,32 @@
 
 <script>
 	const demo = [{
+			avatar: "/static/default/defUser.png",
+			username: "赵丽颖",
+			sex: 1,
+			age: 26,
+			isFollow: true
+		},
+		{
+			avatar: "/static/default/defUser.png",
+			username: "男爵",
+			sex: 2,
+			age: 14,
+			isFollow: false
+		},{
+			avatar: "/static/default/defUser.png",
+			username: "赵丽颖",
+			sex: 1,
+			age: 26,
+			isFollow: true
+		},
+		{
+			avatar: "/static/default/defUser.png",
+			username: "男爵",
+			sex: 2,
+			age: 14,
+			isFollow: false
+		},{
 			avatar: "/static/default/defUser.png",
 			username: "赵丽颖",
 			sex: 1,
@@ -77,7 +103,8 @@
 		// 点击输入框事件
 		onNavigationBarSearchInputClicked() {
 			uni.navigateTo({
-				url: '../search/search'
+				url: '../search/search?type=user',
+				animationType:'fade-in'
 			});
 		},
 		// 点击取消

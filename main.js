@@ -9,6 +9,9 @@ import divider from './components/common/divider'
 import emptyPage from './components/common/empty-page'
 Vue.component('myHr',divider)
 Vue.component('emptyPage',emptyPage)
+// 注册自定义工具类
+import $Utils from './utils/my-update.js'
+Vue.prototype.$Utils = $Utils
 
 App.mpType = 'app'
 const app = new Vue({

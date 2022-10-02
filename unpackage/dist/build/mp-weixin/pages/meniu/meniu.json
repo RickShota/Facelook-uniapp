@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "菜单",
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#f0f2f5",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uni-nav-bar": "/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar",
+    "uni-collapse": "/uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
+    "uni-collapse-item": "/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item"
+  }
+}

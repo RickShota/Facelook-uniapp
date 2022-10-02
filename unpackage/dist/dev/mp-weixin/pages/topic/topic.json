@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "话题",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "hot-cate": "/components/common/hot-cate",
+    "topic-item": "/components/common/topic-item"
+  }
+}

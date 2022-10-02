@@ -1,0 +1,12 @@
+
+.theflex {
+	flex-direction: column;
+	align-items: flex-start;
+}
+.man {
+	color: #2979ff;
+}
+.woman {
+	color: #dd524d;
+}
+

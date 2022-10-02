@@ -1,0 +1,1 @@
+<view class="uni-collapse" style="background-color:#f0f2f5;"><slot></slot></view>
