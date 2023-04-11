@@ -1,0 +1,10 @@
+{
+  "defaultTitle": "话题分类",
+  "pullRefresh": false,
+  "usingComponents": {
+    "my-hr": "/components/common/divider",
+    "empty-page": "/components/common/empty-page",
+    "topic-item": "/components/common/topic-item",
+    "load-more": "/components/common/load-more"
+  }
+}

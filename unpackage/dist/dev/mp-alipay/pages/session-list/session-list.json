@@ -1,0 +1,9 @@
+{
+  "defaultTitle": "聊天",
+  "pullRefresh": true,
+  "usingComponents": {
+    "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+    "empty-page": "/components/common/empty-page",
+    "msg-item": "/components/common/msg-item"
+  }
+}

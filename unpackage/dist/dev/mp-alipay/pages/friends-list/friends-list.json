@@ -1,0 +1,9 @@
+{
+  "defaultTitle": "好友列表",
+  "pullRefresh": false,
+  "usingComponents": {
+    "empty-page": "/components/common/empty-page",
+    "load-more": "/components/common/load-more",
+    "friends-item": "/components/common/friends-item"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "defaultTitle": "编辑资料",
+  "pullRefresh": false,
+  "usingComponents": {
+    "uni-list": "/uni_modules/uni-list/components/uni-list/uni-list",
+    "uni-list-item": "/uni_modules/uni-list/components/uni-list-item/uni-list-item",
+    "uni-datetime-picker": "/uni_modules/uni-datetime-picker/components/uni-datetime-picker/uni-datetime-picker",
+    "pickers": "/components/ming-picker/ming-picker"
+  }
+}

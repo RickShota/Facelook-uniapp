@@ -1,0 +1,11 @@
+{
+  "defaultTitle": "facelook",
+  "pullRefresh": false,
+  "backgroundColor": "#eee",
+  "usingComponents": {
+    "my-hr": "/components/common/divider",
+    "empty-page": "/components/common/empty-page",
+    "news-item": "/components/common/news-item",
+    "load-more": "/components/common/load-more"
+  }
+}

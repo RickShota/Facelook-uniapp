@@ -2,6 +2,8 @@
 
 采用uni-app（vue2）开发的社区交友类app，临摹对象为Facebook
 
+`git add .`
+
 `git commit -m "a"`
 
 `git push 更新`

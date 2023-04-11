@@ -1,0 +1,8 @@
+{
+  "defaultTitle": "",
+  "usingComponents": {
+    "news-item": "/components/common/news-item",
+    "topic-item": "/components/common/topic-item",
+    "friends-item": "/components/common/friends-item"
+  }
+}

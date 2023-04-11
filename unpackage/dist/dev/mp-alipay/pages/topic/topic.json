@@ -1,0 +1,9 @@
+{
+  "defaultTitle": "话题",
+  "pullRefresh": false,
+  "usingComponents": {
+    "my-hr": "/components/common/divider",
+    "hot-cate": "/components/common/hot-cate",
+    "topic-item": "/components/common/topic-item"
+  }
+}

@@ -1,6 +1,7 @@
 <template>
 	<!-- 首页 -->
 	<view class="content">
+		<!-- 微信自定义导航栏 -->
 		<!-- #ifdef MP-WEIXIN -->
 		<uni-nav-bar statusBar fixed="true">
 			<template v-slot:left>
@@ -17,10 +18,12 @@
 				<view class="shareNews" @click="shareNews">
 					<view style="display: flex;align-items: center;">
 						<!-- 头像 -->
-						<image class="rounded-circle mr-2" src="/static/default/userImg.jpg">
+						<image class="rounded-circle mr-2"
+							:src="loginStatus?'/static/default/userImg.jpg':'/static/default/defUser.png'">
 							<!-- 昵称 -->
 							<view>
-								<text class="font">分享一下你的新鲜事吧</text>
+								<text class="font" v-if="loginStatus">发个贴吧</text>
+								<text class="font" v-else>点击登录，体验更多功能</text>
 							</view>
 							<view class="iconfont icon-dongtai icon"></view>
 					</view>
@@ -37,7 +40,7 @@
 			</template>
 			<template v-else>
 				<!-- 无内容组件 -->
-				<empty-page text1='无内容' text2='请尝试刷新或者检查网络'></empty-page>
+				<empty-page text1='无内容' text2='出错了,请重试 >_<'></empty-page>
 			</template>
 		</scroll-view>
 	</view>
@@ -48,11 +51,11 @@
 	import uniNavBar from '@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue'
 	// #endif
 	const fakeData = [{
-			username: "Assassin~雷古",
+			username: "Rick Henry",
 			userpic: "/static/default/defUser.png",
 			newstime: "2022-05-24 上午 11:31",
 			isFollow: false,
-			title: "马上就要到圣诞节了，提前祝大家圣诞快乐！",
+			title: "测试数据，这是一个标题",
 			titlepic: "/static/demo/banner1.jpg",
 			content: "",
 			support: {
@@ -60,22 +63,22 @@
 				support_count: 123,
 				unsupport_count: 0,
 			},
-			comment_count: 0,
+			comment_count: 4,
 			share_num: 2,
 		},
 		{
-			username: "违规用户",
+			username: "昵称2",
 			userpic: "/static/default/defUser.png",
 			newstime: "2020-05-24 上午 11:31",
 			isFollow: true,
-			title: "为什么，啊啊啊，真的服了",
+			title: "测试数据，这是一个标题2",
 			titlepic: "",
 			support: {
 				type: "unsupport",
 				support_count: 0,
 				unsupport_count: 5,
 			},
-			comment_count: 432,
+			comment_count: 4,
 			share_num: 0,
 		},
 		{
@@ -83,7 +86,7 @@
 			userpic: "/static/default/defUser.png",
 			newstime: "2020-05-24 上午 11:31",
 			isFollow: false,
-			title: "这是一个标题2",
+			title: "测试数据，这是一个标题3",
 			titlepic: "/static/demo/demo2.jpg",
 			support: {
 				type: "",
@@ -111,6 +114,7 @@
 	];
 	import newsItem from '@/components/common/news-item.vue';
 	import loadMore from '@/components/common/load-more.vue';
+	import {mapState} from 'vuex';
 	export default {
 		components: {
 			newsItem,
@@ -129,55 +133,61 @@
 				newsList: [],
 			}
 		},
+		// 同步登录状态
+		computed:{
+			...mapState(['loginStatus'])
+		},
 		// 监听导航栏搜索按钮
 		onNavigationBarButtonTap(e) {
-			if (e.index === 1) {
-				uni.navigateTo({
-					url: '../search/search', // 搜索
+			// 搜索按钮
+			uni.navigateTo({
+					url: '../search/search', 
 					animationType: 'fade-in',
 					success: res => {},
 					fail: () => {},
 					complete: () => {}
-				});
-			} else {
-				this.gotoTopic()
-			}
-
+			});
 		},
 		onLoad() {
-			// 获取系统信息
+			// 获取屏幕信息
 			uni.getSystemInfo({
 					success: res => {
-						// 计算滚动容器高度=总高度-上下导航Bar
+						// 计算滚动容器高度 = 可用高度
+						// #ifndef MP-WEIXIN
 						this.scrollH = res.windowHeight
+						// #endif
+						// #ifdef MP-WEIXIN
+						this.scrollH = res.windowHeight - 44 - res.statusBarHeight // 自定义导航栏 - 手机状态栏
+						// #endif
 					}
-				}),
-				this.getData()
+				})
+			// 获取数据
+			this.getData()
+			// 获取登录状态
+			this.$store.dispatch('initUser')
 		},
 		methods: {
-			// 前往话题页
-			gotoTopic(){
+			// 登录
+			gotoLogin() {
 				uni.navigateTo({
-					url: '../topic/topic', // 话题
-					animationType: 'slide-in-right',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
-				});
+					url: '../login/login',
+					animationType: 'slide-in-bottom',
+				})
 			},
 			// 发动态
 			shareNews() {
-				uni.navigateTo({
-					url: '../add-input/add-input',
-					animationType: 'slide-in-bottom',
-					success: res => {},
-					fail: () => {},
-					complete: () => {}
-				});
+				// 权限验证
+				this.checkAuth(() => {
+					uni.navigateTo({
+						url: '../add-input/add-input',
+						animationType: 'slide-in-bottom',
+					})
+				})
 			},
 			// 获取文章数据
 			getData() {
 				this.newsList = fakeData;
+				// TODO:
 			},
 			// 关注
 			onfollow(e) {
@@ -216,6 +226,7 @@
 					}
 				}
 			},
+			// 加载更多
 			loadmore() {
 				// 节流操作
 				if (this.loadMore !== '上拉加载更多') return;
@@ -238,10 +249,12 @@
 		font-size: 50rpx;
 		font-weight: bold;
 	}
-  .search-btn{
+
+	.search-btn {
 		margin-right: 150rpx;
 		font-size: 50rpx;
 	}
+
 	.shareNews {
 		display: flex;
 		align-items: center;

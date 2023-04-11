@@ -5,24 +5,7 @@
 			// 检测更新
 			this.$Utils.update()
 			// 网络监听
-			uni.getNetworkType({
-				success: function(res) {
-					console.log("获取网络类型:", res.networkType);
-					if(res.networkType==='none'){
-						uni.showToast({
-							title:'无法访问互联网，请先连接网络'
-						})
-					}
-				}
-			});
-			uni.onNetworkStatusChange(function(res) {
-				console.log("监听网络状态变化:");
-				if(res.networkType==='none'){
-					uni.showToast({
-						title:'无法访问互联网，请先连接网络'
-					})
-				}
-			});
+			this.$Utils.netWork()
 			// 初始化数据
 		},
 		onShow: function() {

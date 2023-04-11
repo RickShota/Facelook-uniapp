@@ -1,0 +1,30 @@
+.logo-text.data-v-57280228 {
+  color: #1b74e3;
+  font-size: 50rpx;
+  font-weight: bold;
+}
+.search-btn.data-v-57280228 {
+  margin-right: 150rpx;
+  font-size: 50rpx;
+}
+.shareNews.data-v-57280228 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 20rpx;
+}
+.shareNews image.data-v-57280228 {
+  width: 75rpx;
+  height: 75rpx;
+}
+.shareNews text.data-v-57280228 {
+  line-height: 0.5;
+}
+.shareNews .icon.data-v-57280228 {
+  font-size: 40rpx;
+  font-weight: bold;
+  position: absolute;
+  right: 40rpx;
+}
+

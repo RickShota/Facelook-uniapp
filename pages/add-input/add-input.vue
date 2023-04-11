@@ -1,10 +1,15 @@
 <template>
 	<view>
 		<!-- 自定义导航栏组件 -->
-		<uni-nav-bar statusBar @clickLeft="back" @clickRight="send" backgroundColor="#f0f2f5" left-icon="closeempty"
+		<uni-nav-bar statusBar @clickLeft="goback" backgroundColor="#f0f2f5" left-icon="closeempty"
 			fixed="true" title="创建帖子">
 		</uni-nav-bar>
-
+		<!-- #ifdef MP-WEIXIN -->
+		<view style="padding: 40rpx;">
+			<empty-page text1="出错啦" text2="该模块由于涉及个人主体小程序未开放类目，其用户输入功能已剔除，无法正常展示，App-Plus和H5端正常展示"></empty-page>
+		</view>
+		<!-- #endif -->
+		<!-- #ifndef MP-WEIXIN -->
 		<view style="padding: 20rpx;">
 			<!-- 用户信息 -->
 			<view class="userInfo">
@@ -17,7 +22,7 @@
 						<text class="font-small text-light-muted">#所有人</text>
 					</view>
 					<!-- 发布按钮 -->
-					<view class="send-btn">发布</view>
+					<view class="send-btn" @click="send">发布</view>
 				</view>
 			</view>
 			<!-- 输入框 -->
@@ -26,6 +31,7 @@
 			<uni-file-picker v-show="imageList.length>0" ref="choosePic" v-model="imageList" fileMediatype="image"
 				mode="grid" @select="select" @progress="progress" @success="success" @fail="fail" />
 		</view>
+		<!-- #endif -->
 		<!-- 底部操作条 -->
 		<view class="bottomBar">
 			<view class="iconfont icon-tuwenxiangqing" @click="checkImg"></view>
@@ -69,6 +75,7 @@
 			})
 		},
 		methods: {
+			// #ifdef APP || H5
 			// 获取上传状态
 			select(e) {
 				console.log('选择文件：', e)
@@ -86,8 +93,9 @@
 				console.log('上传失败：', e)
 			},
 			// 返回按钮
-			back() {
+			goback() {
 				// 保存草稿功能
+				// #ifdef APP || APP-PLUS
 				if (this.text !== '' || this.imageList.length > 0) {
 					uni.showModal({
 						content: '是否保存为草稿？',
@@ -114,6 +122,14 @@
 						animationType: 'slide-out-bottom'
 					})
 				}
+				// #endif
+				// #ifdef MP-WEIXIN || H5
+				// 返回上页
+				uni.navigateBack({
+					data:1,
+					animationType: 'slide-out-bottom' // 返回动画：从底部滑出
+				})
+				// #endif
 			},
 			// 发送按钮
 			send() {
@@ -143,6 +159,7 @@
 					}
 				})
 			},
+			// #endif
 			checkKeyboard() {
 				uni.hideKeyboard()
 			}

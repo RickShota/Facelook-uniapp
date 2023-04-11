@@ -28,7 +28,7 @@
 					<swiper-item v-for="(page,index) in newsList" :key="index">
 						<!-- 上下滚动容器 -->
 						<scroll-view scroll-y :style="'height:' + scrollH + 'px;'">
-							<template v-if="page.list.length>0">
+							<template v-if="page.list.length>0 && isLog">
 								<!-- 聊天列表 -->
 								<block v-for="(item,index2) in page.list" :key='index2'>
 									<msg-item :item="item" :index="index2"></msg-item>
@@ -60,21 +60,21 @@
 <script>
 	const fakeData = [{
 			avatar: "/static/default/defUser.png",
-			username: "马化腾",
+			username: "用户1",
 			update_time: 1661152170,
 			data: "快点回来吃饭",
 			noread: 0
 		},
 		{
 			avatar: "/static/default/defUser.png",
-			username: "马云",
+			username: "用户2",
 			update_time: 1663830570,
 			data: "知道了",
 			noread: 1
 		},
 		{
 			avatar: "/static/default/defUser.png",
-			username: "郭富城",
+			username: "用户3",
 			update_time: 1661152170,
 			data: "你在干嘛",
 			noread: 99
@@ -171,8 +171,21 @@
 			uniNavBar
 			// #endif
 		},
+		onShow() {
+			// 检查token,确定登录状态
+			try {
+				const value = uni.getStorageSync('token');
+				if (value==='ok') {
+					console.log(value);
+					this.isLog = true
+				} 
+			} catch (e) {
+				console.log(e.message);
+			}
+		},
 		data() {
 			return {
+				isLog: false,
 				tabIndex: 0, // 顶部默认分类
 				scrollInto: "", // 顶部导航
 				scrollH: 600, // 默认滚动容器高度
@@ -211,8 +224,13 @@
 			// 获取系统信息
 			uni.getSystemInfo({
 					success: res => {
-						// 计算滚动容器高度 = 可用高度 - 手机状态栏 - 分类导航
-						this.scrollH = res.windowHeight - uni.upx2px(110)
+						// 计算滚动容器高度 = 可用高度 - 分类导航
+						// #ifndef MP-WEIXIN
+						this.scrollH = res.windowHeight - uni.upx2px(110) 
+						// #endif
+						// #ifdef MP-WEIXIN
+						this.scrollH = res.windowHeight - uni.upx2px(110) - 44 - res.statusBarHeight  // 自定义导航栏 - 手机状态栏
+						// #endif
 					}
 				}),
 				this.getData()

@@ -1,0 +1,9 @@
+{
+  "defaultTitle": "我的主页",
+  "pullRefresh": false,
+  "usingComponents": {
+    "empty-page": "/components/common/empty-page",
+    "news-item": "/components/common/news-item",
+    "load-more": "/components/common/load-more"
+  }
+}

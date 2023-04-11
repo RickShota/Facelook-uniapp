@@ -15,16 +15,7 @@
 						"titleSize": "50rpx",
 						"titleAlign": "left",
 						"splitLine": true,
-						"buttons": [{ // 话题
-								"color": "#000",
-								"colorPressed": "#1676f1",
-								"background": "#e4e6eb",
-								"float": "right",
-								"fontSize": "55rpx",
-								"fontSrc": "/static/icon/iconfont.ttf",
-								"text": "\ue8b1",
-								"width": "50px"
-							},
+						"buttons": [
 							{ // 搜索
 								"color": "#000",
 								"colorPressed": "#1676f1",
@@ -39,6 +30,7 @@
 						]
 					}
 				},
+				// 微信导航栏样式
 				"mp-weixin": {
 					"navigationStyle":"custom"// 禁用微信原生导航栏
 				}
@@ -74,10 +66,10 @@
 			}
 
 		}, {
-			// 动态页
+			// 话题页
 			"path": "pages/news/news",
 			"style": {
-				"navigationBarTitleText": "动态",
+				"navigationBarTitleText": "话题",
 				"enablePullDownRefresh": false,
 				"app-plus": {
 					// 导航栏
@@ -164,6 +156,9 @@
 							"text": "搜索"
 						}]
 					}
+				},
+				"mp-weixin": {
+					"navigationStyle":"custom"// 禁用微信原生导航栏
 				}
 			}
 		}, {
@@ -281,13 +276,6 @@
 				}
 			}
 		}, {
-			// 话题页
-			"path": "pages/topic/topic",
-			"style": {
-				"navigationBarTitleText": "话题",
-				"enablePullDownRefresh": false
-			}
-		}, {
 			// 更多话题列表
 			"path": "pages/topic-list/topic-list",
 			"style": {
@@ -383,7 +371,7 @@
 			},
 			{
 				"pagePath": "pages/news/news",
-				"text": "动态",
+				"text": "话题",
 				"iconPath": "static/tabbar/news.png",
 				"selectedIconPath": "static/tabbar/newsed.png"
 			},

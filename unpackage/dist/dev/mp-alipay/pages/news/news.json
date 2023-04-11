@@ -1,0 +1,10 @@
+{
+  "defaultTitle": "动态",
+  "pullRefresh": false,
+  "usingComponents": {
+    "my-hr": "/components/common/divider",
+    "empty-page": "/components/common/empty-page",
+    "news-item": "/components/common/news-item",
+    "load-more": "/components/common/load-more"
+  }
+}

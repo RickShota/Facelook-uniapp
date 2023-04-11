@@ -1,0 +1,32 @@
+.userImg.data-v-bc14f702 {
+  width: 75rpx;
+  height: 75rpx;
+}
+.my-talk.data-v-bc14f702 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.my-talk .my-pop.data-v-bc14f702 {
+  max-width: 70%;
+  min-width: 20rpx;
+  background-color: #4989ff;
+  padding: 10rpx 20rpx;
+  margin-top: 10rpx;
+  color: #fff;
+  border-radius: 30rpx 5rpx 30rpx 30rpx;
+}
+.your-talk.data-v-bc14f702 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.your-talk .your-pop.data-v-bc14f702 {
+  max-width: 70%;
+  min-width: 20rpx;
+  background-color: #d6d6d6;
+  padding: 10rpx 20rpx;
+  margin-top: 10rpx;
+  border-radius: 5rpx 30rpx 30rpx 30rpx;
+}
+

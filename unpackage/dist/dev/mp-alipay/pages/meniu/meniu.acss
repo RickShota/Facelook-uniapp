@@ -1,0 +1,77 @@
+page {
+  background-color: #f0f2f5;
+}
+page .logo-text {
+  font-size: 50rpx;
+  font-weight: 500;
+  color: #000;
+}
+page .menuPage {
+  padding: 20rpx;
+}
+page .menuPage .btns {
+  margin: 20rpx 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+page .menuPage .btns .hoverbtn {
+  background-color: #c8c8c8;
+}
+page .menuPage .btns .menu-btn {
+  background-color: #fff;
+  width: 47%;
+  height: 120rpx;
+  border-radius: 15rpx;
+  border: 1rpx solid #e8e8e8;
+  box-shadow: 2px 3px 20px 1px #dcdcdc;
+  margin: 0 15rpx 15rpx 0;
+  padding: 20rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+}
+page .menuPage .btns-last {
+  margin: 20rpx 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+page .menuPage .btns-last .hoverbtn {
+  background-color: #c8c8c8;
+}
+page .menuPage .btns-last view {
+  background-color: #fff;
+  width: 95%;
+  height: 90rpx;
+  border-radius: 15rpx;
+  border: 1rpx solid #e8e8e8;
+  box-shadow: 2px 3px 20px 1px #dcdcdc;
+  margin: 0 15rpx 15rpx 0;
+  padding: 20rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+}
+page .menuPage .logout-btn {
+  background-color: #dee0e2;
+  height: 70rpx;
+  margin: 40rpx 20rpx;
+  text-align: center;
+  line-height: 70rpx;
+  border-radius: 5px;
+  font-weight: 600;
+}
+page .menuPage .logout-btn-ed {
+  background-color: #b7b9ba;
+}
+page .menuPage .copyright {
+  text-align: center;
+}
+page .menuPage .copyright .a {
+  font-size: 25rpx;
+  color: #9f9f9f;
+}
+page .menuPage .copyright .b {
+  font-size: 20rpx;
+  color: #bdbdbd;
+}
+

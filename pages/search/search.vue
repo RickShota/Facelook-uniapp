@@ -1,34 +1,54 @@
 <template>
-	<view class="px-2">
-		<!-- 搜索历史 -->
-		<template v-if="searchRes.length===0">
-			<view class="py-2 font-md">搜索历史</view>
-			<!-- 搜索历史标签 -->
-			<view class="flex flex-wrap">
-				<view class="border rounded font mx-2 my-1 px-1 text-color" hover-class="bg-light"
-					v-for="(item,index) in historyList" :key="index" @click="searchEvent(item)">
-					{{item}}
+	<view>
+		<!-- 自定义导航栏 -->
+		<!-- #ifdef MP-WEIXIN -->
+		<uni-nav-bar statusBar fixed="true">
+			<template v-slot:left>
+				<view class="back-btn iconfont icon-back" @click="back"></view>
+			</template>
+			<template>
+				<input type="text" 
+					:placeholder="pageTitle" 
+					v-model="text" 
+					class="the-ipt" 
+					confirm-type="搜索"
+					@confirm="searchEvent()"/>
+			</template>
+		</uni-nav-bar>
+		<!-- #endif -->
+		
+		<view class="px-2">
+			<!-- 搜索历史 -->
+			<template v-if="searchRes.length===0">
+				<view class="py-2 font-md">搜索历史</view>
+				<!-- 搜索历史标签 -->
+				<view class="flex flex-wrap">
+					<view class="border rounded font mx-2 my-1 px-1 text-color" hover-class="bg-light"
+						v-for="(item,index) in historyList" :key="index" @click="searchEvent(item)">
+						{{item}}
+					</view>
 				</view>
-			</view>
-		</template>
-		<template v-else>
-			<!-- 搜索结果展示 -->
-			<block v-for="(item,index) in searchRes" :key="index">
-				<template v-if="searchType==='user'">
-					<friends-item :item="item" :index="index"></friends-item>
-				</template>
-				<template v-else-if="searchType==='topic'">
-					<topic-item :item="item" :index="index"></topic-item>
-				</template>
-				<template v-else-if="searchType==='facelook'">
-					<view style="height: 50rpx;width: 100%;text-align: center;line-height: 50rpx;">无搜索结果</view>
-				</template>
-				<template v-else>
-					<news-item :item="item" :index="index"></news-item>
-				</template>
-			</block>
-		</template>
+			</template>
+			<template v-else>
+				<!-- 搜索结果展示 -->
+				<block v-for="(item,index) in searchRes" :key="index">
+					<template v-if="searchType==='user'">
+						<friends-item :item="item" :index="index"></friends-item>
+					</template>
+					<template v-else-if="searchType==='topic'">
+						<topic-item :item="item" :index="index"></topic-item>
+					</template>
+					<template v-else-if="searchType==='facelook'">
+						<view style="height: 50rpx;width: 100%;text-align: center;line-height: 50rpx;">无搜索结果</view>
+					</template>
+					<template v-else>
+						<news-item :item="item" :index="index"></news-item>
+					</template>
+				</block>
+			</template>
+		</view>
 	</view>
+	
 </template>
 
 <script>
@@ -192,11 +212,17 @@
 	import newsItem from '@/components/common/news-item.vue';
 	import topicItem from '@/components/common/topic-item.vue';
 	import friendsItem from '@/components/common/friends-item.vue';
+	// #ifdef MP-WEIXIN
+	import uniNavBar from '@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue'
+	// #endif
 	export default {
 		components: {
 			newsItem,
 			topicItem,
-			friendsItem
+			friendsItem,
+			// #ifdef MP-WEIXIN
+			uniNavBar
+			// #endif
 		},
 		data() {
 			return {
@@ -213,7 +239,8 @@
 				],
 				searchRes: [], // 搜索结果
 				text: '', // 搜索内容
-				searchType: '' // 搜索类型
+				searchType: '', // 搜索类型
+				pageTitle:'在Facelook中搜索'
 			}
 		},
 		// 窗口加载钩子函数
@@ -233,6 +260,7 @@
 				default:
 					pageTitle = '搜索帖子'
 			}
+			this.pageTitle = pageTitle
 			// 动态修改导航栏搜索框占位符
 			// #ifdef APP-PLUS
 			let currentWebview = this.$mp.page.$getAppWebview()
@@ -264,7 +292,8 @@
 		},
 		methods: {
 			// 搜索事件
-			searchEvent(text) {
+			searchEvent(data) {
+				let text = this.text?this.text:data
 				console.log(text);
 				// 收起键盘
 				uni.hideKeyboard()
@@ -296,12 +325,24 @@
 					}
 				}, 1500)
 			},
+			back(){
+				uni.navigateBack({
+					data: 1
+				})
+			}
 		}
 	}
 </script>
 
-<style>
+<style lang="less" scoped>
 	.text-color {
 		color: #3f3f3f;
+	}
+	.the-ipt{
+		width: 100%;
+		height: 35px;
+		margin-top: 3px;
+		text-align: center;
+		flex: 2;
 	}
 </style>

@@ -11,22 +11,24 @@
 			</template>
 		</uni-nav-bar>
 		<!-- #endif -->
-		
+
 		<view class="menuPage">
-			<!-- 个人信息 -->
+			<!-- 个人信息栏 -->
 			<view class="flex align-center" @click="gotoMy()">
-				<image v-if="isLog" :src="userImg" class="rounded-circle mr-2" style="height: 70rpx;width: 70rpx;">
+				<image v-if="loginStatus" :src="userImg" class="rounded-circle mr-2"
+					style="height: 70rpx;width: 70rpx;">
 				</image>
 				<image v-else src="/static/default/defUser.png" class="rounded-circle mr-2"
-					style="height: 70rpx;width: 70rpx;"></image>
+					style="height: 70rpx;width: 70rpx;">
+				</image>
 				<view class="flex flex-column flex-1">
 					<view class="flex align-center justify-between">
 						<!-- 昵称 -->
-						<text v-if="isLog" class="font">Rick Henry</text>
-						<text v-else class="font">点击登录</text>
+						<text v-if="loginStatus" class="font">{{userInfo.username}}</text>
+						<text v-else class="font">点击登录，体验更多功能</text>
 					</view>
 					<view class="flex align-center justify-between">
-						<text v-show="isLog" class="text-secondary text-ellipsis"
+						<text v-show="loginStatus" class="text-secondary text-ellipsis"
 							style="width: 500rpx;font-size: 25rpx;">查看你的个人主页</text>
 					</view>
 				</view>
@@ -37,21 +39,17 @@
 			<!-- 功能按钮 -->
 			<text style="font-size: 26rpx;margin-left: 5rpx;">所有快速访问项目</text>
 			<view class="btns">
-				<view hover-class="hoverbtn" @click="gotoNews" class="menu-btn">️️
-					<text style="margin-left: 10rpx;">🌟</text><br>
-					<text>动态</text>
-				</view>
 				<view hover-class="hoverbtn" @click="gotoFreinds" class="menu-btn">
 					<text style="margin-left: 10rpx;">👥</text><br>
 					<text>好友</text>
 				</view>
-				<view hover-class="hoverbtn" @click="gotoTopic" class="menu-btn">
-					<text style="margin-left: 10rpx;">#️⃣</text><br>
-					<text>话题</text>
-				</view>
 				<view hover-class="hoverbtn" @click="gotoSession" class="menu-btn">
 					<text style="margin-left: 10rpx;">💬</text><br>
 					<text>聊天</text>
+				</view>
+				<view hover-class="hoverbtn" @click="gotoTopic" class="menu-btn">
+					<text style="margin-left: 10rpx;">#️⃣</text><br>
+					<text>话题</text>
 				</view>
 				<view hover-class="hoverbtn" @click="gotoClear" class="menu-btn">
 					<text style="margin-left: 10rpx;">🗑️</text><br>
@@ -60,10 +58,6 @@
 				<view hover-class="hoverbtn" @click="gotoEmpty" class="menu-btn">
 					<text style="margin-left: 10rpx;">🔖</text><br>
 					<text>收藏夹</text>
-				</view>
-				<view hover-class="hoverbtn" @click="gotoEmpty" class="menu-btn">
-					<text style="margin-left: 10rpx;">🚩</text><br>
-					<text>公共主页</text>
 				</view>
 				<view hover-class="hoverbtn" @click="gotoEmpty" class="menu-btn">
 					<text style="margin-left: 10rpx;">🕹</text><br>
@@ -117,11 +111,11 @@
 				</uni-collapse-item>
 			</uni-collapse>
 			<!-- 退出登录 -->
-			<view v-show="isLog" class="logout-btn" hover-class="logout-btn-ed" @click="logout">
-				退&nbsp;出
+			<view v-show="loginStatus" class="logout-btn" hover-class="logout-btn-ed" @click="logout">
+				退&nbsp;出&nbsp;登&nbsp;录
 			</view>
 			<!-- 版权信息 -->
-			<view class="copyright">
+			<view class="copyright mt-3">
 				<text class="a">copyright@2022&nbsp;|&nbsp;made&nbsp;by&nbsp;黄瑞瑞</text><br>
 				<text class="b">该软件为模仿Facebook的练手项目，非商业用途</text><br>
 				<text class="b">作者保留所有权</text>
@@ -135,6 +129,7 @@
 	// #ifdef MP-WEIXIN
 	import uniNavBar from '@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue'
 	// #endif
+	import {mapState} from 'vuex';
 	export default {
 		components: {
 			// #ifdef MP-WEIXIN
@@ -147,17 +142,13 @@
 				userImg: '/static/default/userImg.jpg'
 			}
 		},
-		onShow() {
-			// 检查token,确定登录状态
-			try {
-				const value = uni.getStorageSync('token');
-				if (value === 'ok') {
-					console.log(value);
-					this.isLog = true
-				}
-			} catch (e) {
-				console.log(e.message);
-			}
+		// 同步登录状态
+		computed:{
+			...mapState(['loginStatus','userInfo'])
+		},
+		onLoad() {
+			// 获取登录状态
+			this.$store.dispatch('initUser')
 		},
 		// 监听导航栏按钮
 		onNavigationBarButtonTap(e) {
@@ -178,50 +169,53 @@
 			}
 		},
 		methods: {
-			gotoNews() {
+			
+			gotoFreinds() {
+				// 权限验证
+				this.checkAuth(() => {
+					uni.navigateTo({
+						url: '../friends-list/friends-list',
+					});
+				})
+			},
+			gotoSession() {
+				// 权限验证
+				this.checkAuth(() => {
+					uni.navigateTo({
+						url: '../session-list/session-list',
+					});
+				})
+			},
+			gotoTopic() {
 				// 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
 				uni.switchTab({
 					url: '../news/news',
 				});
 			},
 			gotoMy() {
-				// 如果登录了，跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
-				if (this.isLog) {
+				// 权限验证
+				this.checkAuth(() => {
 					uni.switchTab({
 						url: '../user/user',
 					});
-				} else {
-					uni.navigateTo({
-						url: '../login/login',
-						animationType: 'slide-in-bottom'
-					});
-				}
-			},
-			gotoFreinds() {
-				// 保留当前页面，跳转到应用内的某个页面
-				uni.navigateTo({
-					url: '../friends-list/friends-list',
-				});
-			},
-			gotoSession() {
-				uni.navigateTo({
-					url: '../session-list/session-list',
-				});
-			},
-			gotoTopic() {
-				uni.navigateTo({
-					url: '../topic/topic',
-				});
+				})
 			},
 			// 清除缓存
 			gotoClear() {
-				let res = uni.getStorageInfoSync().currentSize
-				let rabish = res < 1024 ? res + 'kb' : (res / 1024).toFixed(2) + 'Mb'
-				uni.showToast({
-					icon: 'success',
-					title: `已清除${rabish}缓存`
+				uni.showModal({
+					content: "清除本地缓存会退出登录，确定继续？",
+					success: (e) => {
+						if (e.confirm) {
+							let res = uni.getStorageInfoSync().currentSize
+							let rabish = res < 1024 ? res + 'kb' : (res / 1024).toFixed(2) + 'Mb'
+							uni.showToast({
+								icon: 'success',
+								title: `已清除${rabish}缓存`
+							})
+							uni.clearStorageSync()
+						}
+					}
 				})
-				uni.clearStorageSync()
 			},
 			gotoEmpty() {
 				uni.showToast({
@@ -236,26 +230,16 @@
 					title: "确定退出？",
 					itemList: ['退出'],
 					itemColor: '#c80104',
-					success: (res)=> {
-						try {
-							// 清除本地token
-							uni.removeStorageSync('token');
-							// 清除登录标识符
-							this.isLog = false
-							// 刷新页面
-							// #ifndef MP-WEIXIN
-							location.reload()
-							// #endif
-							// #ifdef MP-WEIXIN
-							this.onShow()
-							// #endif
-						} catch (e) {
-							console.log(e.message);
+					success: (res) => {
+						if(res.tapIndex===0){
+							// 调用vuex里的退出函数
+							this.$store.commit('logout')
+							uni.showToast({
+								title:'退出登录成功',
+								icon:'none'
+							})
 						}
 					},
-					fail: function(res) {
-						console.log(res.errMsg);
-					}
 				});
 			}
 		}

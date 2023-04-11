@@ -1,0 +1,31 @@
+.userImage.data-v-433d053e {
+  display: block;
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+.slot-box.data-v-433d053e {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.slot-text.data-v-433d053e {
+  flex: 1;
+  font-size: 30rpx;
+  margin-right: 10px;
+}
+.submit.data-v-433d053e {
+  margin: 50rpx;
+  height: 80rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  line-height: 80rpx;
+  color: #fff;
+  font-size: 35rpx;
+  background-color: #1676f1;
+}
+.submited.data-v-433d053e {
+  color: #dfdfdf;
+  background-color: #1264c8;
+}
+

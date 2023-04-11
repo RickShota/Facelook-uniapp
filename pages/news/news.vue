@@ -4,46 +4,30 @@
 		<!-- #ifdef MP-WEIXIN -->
 		<uni-nav-bar statusBar fixed="true">
 			<template v-slot:left>
-				<view class="logo-text">动态</view>
+				<view class="logo-text">话题</view>
 			</template>
 			<template v-slot:right>
-				<view></view>
+				<view class="iconfont icon-sousuo search-btn" @click="gotoSearch"></view>
 			</template>
 		</uni-nav-bar>
 		<!-- #endif -->
 		<!-- 首页 -->
 		<view class="content">
-			<!-- 顶部选项卡 -->
-			<scroll-view :scroll-x="true" class="scroll-row" scroll-with-animation :scroll-into-view="scrollInto">
-				<view v-for="(item,index) in tabBars" :key="index" @click="changeTab(index)" :id="'tab'+index"
-					:class="tabIndex === index ? 'text-main font-weight-bold font' : ''"
-					class="scroll-row-item px-3 py-1 font">{{item.name}}</view>
-			</scroll-view>
-			<!-- 左右滑块视图容器 -->
-			<swiper :duration="150" :current="tabIndex" @change="onChangeTab" :style="'height:' + scrollH + 'px;'">
-				<!-- 滑块item -->
-				<swiper-item v-for="(page,index) in newsList" :key="index">
-					<!-- 上下滚动容器 -->
-					<scroll-view scroll-y @scrolltolower="loadmore(index)" :style="'height:' + scrollH + 'px;'">
-						<template v-if="page.list.length>0">
-							<!-- 文章列表 -->
-							<view v-for="(item,index2) in page.list" :key="index2">
-								<!-- 分割线全局组件 -->
-								<my-hr></my-hr>
-								<!-- 文章item公共组件 -->
-								<news-item :item="item" :index="index2" @doSupport="doSupport" @follow="onfollow">
-								</news-item>
-							</view>
-							<!-- 上拉加载公共组件 -->
-							<load-more :text="page.loadMore"></load-more>
-						</template>
-						<template v-else>
-							<!-- 无内容组件 -->
-							<empty-page text1='无内容' text2='请尝试刷新或者检查网络'></empty-page>
-						</template>
-					</scroll-view>
+			<!-- 热门分类 -->
+			<hot-cate :hotCate="hotCate"></hot-cate>
+			<!-- 轮播图 -->
+			<swiper class="px-2 pb-2" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
+				<swiper-item>
+					<image src="@/static/demo/banner2.jpg" style="height: 300rpx; " class="w-100 rounded"></image>
 				</swiper-item>
 			</swiper>
+			<my-hr></my-hr>
+			<!-- 最近更新 -->
+			<view class="p-2 font-md">最近更新</view>
+			<!-- 话题列表组件 -->
+			<block v-for="(item,index) in topicList" :key="index">
+				<topic-item :item="item" :index="index"></topic-item>
+			</block>
 		</view>
 	</view>
 
@@ -53,71 +37,15 @@
 	// #ifdef MP-WEIXIN
 	import uniNavBar from '@/uni_modules/uni-nav-bar/components/uni-nav-bar/uni-nav-bar.vue'
 	// #endif
-	const fakeData = [{
-			username: "昵称1",
-			userpic: "/static/default/defUser.png",
-			newstime: "2020-05-24 上午 11:31",
-			isFollow: false,
-			title: "这是一个标题",
-			titlepic: "/static/demo/banner1.jpg",
-			support: {
-				type: "support",
-				support_count: 123,
-				unsupport_count: 0,
-			},
-			comment_count: 0,
-			share_num: 2,
-		},
-		{
-			username: "昵称2",
-			userpic: "/static/default/defUser.png",
-			newstime: "2020-05-24 上午 11:31",
-			isFollow: true,
-			title: "这是一个标题2",
-			titlepic: "",
-			support: {
-				type: "unsupport",
-				support_count: 0,
-				unsupport_count: 5,
-			},
-			comment_count: 432,
-			share_num: 0,
-		},
-		{
-			username: "昵称3",
-			userpic: "/static/default/defUser.png",
-			newstime: "2020-05-24 上午 11:31",
-			isFollow: false,
-			title: "这是一个标题2",
-			titlepic: "/static/demo/demo2.jpg",
-			support: {
-				type: "",
-				support_count: 1,
-				unsupport_count: 5,
-			},
-			comment_count: 0,
-			share_num: 4,
-		},
-		{
-			username: "昵称4",
-			userpic: "/static/default/defUser.png",
-			newstime: "2020-05-24 上午 11:31",
-			isFollow: false,
-			title: "这是一个标题4",
-			titlepic: "/static/demo/banner2.jpg",
-			support: {
-				type: "",
-				support_count: 0,
-				unsupport_count: 0,
-			},
-			comment_count: 0,
-			share_num: 4,
-		},
-	];
-	import newsItem from '@/components/common/news-item.vue';
-	import loadMore from '@/components/common/load-more.vue';
+	import newsItem from '@/components/common/news-item.vue'
+	import loadMore from '@/components/common/load-more.vue'
+	import hotCate from '../../components/common/hot-cate.vue'
+	import topicItem from '../../components/common/topic-item.vue'
+	import {mapState} from 'vuex';
 	export default {
 		components: {
+			hotCate,
+			topicItem,
 			newsItem,
 			loadMore,
 			// #ifdef MP-WEIXIN
@@ -131,100 +59,86 @@
 				scrollH: 560, // 默认滚动容器高度
 				// 模仿数据
 				newsList: [],
-				tabBars: [{
-						name: "全部",
+				loadMore: "上拉加载更多...",
+				hotCate: [{
+						name: "关注",
 					},
 					{
-						name: "特别关注",
+						name: "推荐",
 					},
 					{
-						name: "好友",
+						name: "国际",
+					},
+				],
+				topicList: [{
+						cover: "/static/demo/topicpic/1.jpeg",
+						title: "话题名称",
+						desc: "话题描述",
+						today_count: 0,
+						news_count: 10,
+					},
+				
+					{
+						cover: "/static/demo/topicpic/1.jpeg",
+						title: "话题名称",
+						desc: "话题描述",
+						today_count: 0,
+						news_count: 10,
 					},
 					{
-						name: "小组",
+						cover: "/static/demo/topicpic/1.jpeg",
+						title: "话题名称",
+						desc: "话题描述",
+						today_count: 0,
+						news_count: 10,
 					},
 					{
-						name: "公共主页",
-					}
+						cover: "/static/demo/topicpic/1.jpeg",
+						title: "话题名称",
+						desc: "话题描述",
+						today_count: 0,
+						news_count: 10,
+					},
 				],
 			}
 		},
 		// 监听导航栏搜索按钮
 		onNavigationBarButtonTap(e) {
 			// 跳转搜索
-			uni.navigateTo({
-				url: '../search/search',
-				animationType: 'fade-in',
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
+			this.gotoSearch()
 		},
 		onLoad() {
 			// 获取窗口信息
 			uni.getSystemInfo({
-					success: res => {
-						// 计算滚动容器高度=可使用窗口宽度-上下导航Bar-分类导航
-						this.scrollH = res.windowHeight - 30
-					}
-				}),
-				this.getData();
+				success: res => {
+					// #ifndef MP-WEIXIN
+					// 计算滚动容器高度 = 可使用窗口宽度 - 分类导航栏
+					this.scrollH = res.windowHeight - 30
+					// #endif
+					// #ifdef MP-WEIXIN
+					// 计算滚动容器高度 = 可使用窗口宽度 - 分类导航栏 - 自定义导航栏高度 - 通知栏
+					this.scrollH = res.windowHeight - 30 - 44 - res.statusBarHeight
+					// #endif
+				}
+			});
+			// 获取登录状态
+			this.$store.dispatch('initUser')
+		},
+		
+		computed: {
+			...mapState({
+				tabBars: state => state.article.articleClass,
+				List: state => state.article.articleList,
+				loginStatus: state => state.loginStatus,
+			})
 		},
 		methods: {
-			// 获取分类对应的文章数据
-			getData() {
-				let arr = [];
-				for (let i = 0; i < this.tabBars.length; i++) {
-					let obj = {
-						loadMore: "上拉加载更多",
-						list: fakeData,
-					};
-					if (i > 3) {
-						obj = {
-							loadMore: "",
-							list: [],
-						};
-					}
-					arr.push(obj);
-				}
-				this.newsList = arr;
-			},
-			// 关注
-			onfollow(e) {
-				this.newsList[1].list[e].isFollow = !this.newsList[1].list[e].isFollow;
-			},
-			// 顶踩
-			doSupport(e) {
-				let item = this.newsList[1].list[e.index];
-				if (item.support.support_count >= 0 && item.support.unsupport_count >= 0) {
-					// 判断原有的操作，避免重复操作
-					switch (item.support.type) {
-						case '': // 无顶踩
-							item.support.type = e.type;
-							item.support[e.type + "_count"]++;
-							break;
-						case 'support': // 已顶
-							if (e.type === 'unsupport') { //点踩
-								item.support.type = 'unsupport';
-								item.support.support_count--;
-								item.support.unsupport_count++;
-							} else { // 再顶
-								item.support.type = '';
-								item.support.support_count--;
-							}
-							break;
-						case 'unsupport': // 已踩
-							if (e.type === 'support') { // 点顶
-								item.support.type = 'support';
-								item.support.support_count++;
-								item.support.unsupport_count--;
-							} else { // 再踩un
-								item.support.type = '';
-								item.support.unsupport_count--;
-							}
-							break;
-					}
-				}
+			// 登录
+			gotoLogin() {
+				uni.navigateTo({
+					url: '../login/login',
+					animationType: 'slide-in-bottom',
+				})
 			},
 			// 监听滑动
 			onChangeTab(e) {
@@ -251,12 +165,35 @@
 					// 恢复加载状态
 					item.loadMore = "上拉加载更多";
 				}, 2000);
+			},
+			// 搜索
+			gotoSearch() {
+				if (this.isLog === true) {
+					uni.navigateTo({
+						url: '../search/search',
+						animationType: 'fade-in',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					});
+				} else {
+					uni.showToast({
+						icon: 'error',
+						title: '请登录后操作'
+					})
+				}
 			}
 		},
 	};
 </script>
 
 <style scoped lang="less">
+	.search-btn {
+		font-size: 45rpx;
+		font-weight: bold;
+		margin-right: 150rpx;
+	}
+
 	.logo-text {
 		font-size: 50rpx;
 		font-weight: 500;

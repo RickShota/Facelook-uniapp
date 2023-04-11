@@ -1,0 +1,67 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/user",
+    "pages/news/news",
+    "pages/msg/msg",
+    "pages/search/search",
+    "pages/add-input/add-input",
+    "pages/meniu/meniu",
+    "pages/session-list/session-list",
+    "pages/friends-list/friends-list",
+    "pages/topic/topic",
+    "pages/topic-list/topic-list",
+    "pages/chat-page/chat-page",
+    "pages/news-detail/news-detail",
+    "pages/user-userInfo/user-userInfo",
+    "pages/login/login"
+  ],
+  "subPackages": [],
+  "window": {
+    "defaultTitle": "facelook",
+    "titleBarColor": "#ffffff",
+    "backgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "textColor": "#2b2b2b",
+    "selectedColor": "#1676f1",
+    "backgroundColor": "#ffffff",
+    "items": [
+      {
+        "pagePath": "pages/index/index",
+        "name": "首页",
+        "icon": "static/tabbar/home.png",
+        "activeIcon": "static/tabbar/homeed.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "name": "个人主页",
+        "icon": "static/tabbar/user.png",
+        "activeIcon": "static/tabbar/usered.png"
+      },
+      {
+        "pagePath": "pages/news/news",
+        "name": "动态",
+        "icon": "static/tabbar/news.png",
+        "activeIcon": "static/tabbar/newsed.png"
+      },
+      {
+        "pagePath": "pages/msg/msg",
+        "name": "通知",
+        "icon": "static/tabbar/msg.png",
+        "activeIcon": "static/tabbar/msged.png"
+      },
+      {
+        "pagePath": "pages/meniu/meniu",
+        "name": "菜单",
+        "icon": "static/tabbar/meniu.png",
+        "activeIcon": "static/tabbar/meniued.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "my-hr": "/components/common/divider",
+    "empty-page": "/components/common/empty-page",
+    "plugin-wrapper": "/plugin-wrapper"
+  }
+}

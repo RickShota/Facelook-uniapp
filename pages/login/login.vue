@@ -1,50 +1,51 @@
 <template>
 	<view>
 		<view>
-			<view class="my-logo">facelook</view>
-			<view class="text-center font-lg log-text" v-if="!isCode">账号密码登录</view>
-			<view class="text-center font-lg log-text" v-else>验证码登录</view>
+			<view class="text-center font-lg log-text" v-if="!isCode">登录</view>
+			<view class="text-center font-lg log-text" v-else>注册账号</view>
 		</view>
-		<!-- 账号密码登录 -->
+		<!-- 登录页面 -->
 		<template v-if="!isCode">
 			<view class="ipts-btn">
 				<view class="up-ipt">
-					<input v-model="username" type="text" placeholder="用户名/邮箱/手机号(任意字符)" />
+					<input v-model="username" type="text" placeholder="用户名/邮箱/手机号" />
 				</view>
 				<view class="up-ipt">
-					<input v-model="password" type="password" placeholder="请输入密码(任意字符)">
+					<input v-model="password" type="password" placeholder="请输入密码">
 				</view>
 				<view class="forget">
-					<text @click="loginWay" style="color: #1b74e4;">验证码登录</text>
-					<text class="ml-1">|&nbsp;登录遇到问题</text>
+					<text @click="loginWay" style="color: #1b74e4;">注册账号</text>
+					<text class="ml-1">|&nbsp;登录遇到问题？</text>
 				</view>
-				<view class="login-btn" hover-class="login-btn-ed" :class="disabled? '':'unlogin-btn'" @click="submit">
+				<view class="login-btn" hover-class="login-btn-ed" :class="disabled? '':'unlogin-btn'" 
+					@click="onLogin">
 					登&nbsp;&nbsp;&nbsp;录
 				</view>
 			</view>
 		</template>
-		<!-- 验证码登录 -->
+		<!-- 注册页面 -->
 		<template v-else>
 			<view class="ipts-btn">
 				<view class="up-ipt2">
-					<view class="mr-2">+86</view>
-					<input v-model="phone" type="text" placeholder="请输入手机号">
+					<input v-model="username" type="text" placeholder="请输入用户名">
 				</view>
 				<view class="up-ipt2">
-					<input v-model="code" type="text" placeholder="请输入6位验证码">
-					<view class="getCode-btn" hover-class="getCode-btn-ed" @click="getCode">{{codetime>0?codetime+'s':'获取验证码'}}</view>
-
+					<input v-model="password" type="password" placeholder="请输入密码">
+				</view>
+				<view class="up-ipt2">
+					<input v-model="repassword" type="password" placeholder="请确认密码">
 				</view>
 				<view class="forget">
-					<text @click="loginWay" style="color: #1b74e4;">账号密码登录</text>
-					<text class="ml-1">|&nbsp;登录遇到问题</text>
+					<text @click="loginWay" style="color: #1b74e4;"><<返回登录</text>
 				</view>
-				<view class="login-btn" hover-class="login-btn-ed" :class="disabled? '':'unlogin-btn'" @click="submit">
-					登&nbsp;&nbsp;&nbsp;录
+				<view class="login-btn" hover-class="login-btn-ed" :class="disabled? '':'unlogin-btn'"
+					@click="onRegister">
+					注&nbsp;&nbsp;&nbsp;册
 				</view>
 			</view>
 		</template>
-		<view class="mt-5">
+
+		<view class="mt-5 theWay">
 			<view class="text-center py-2" style="color: #b3b3b3;font-size: 30rpx;">———&nbsp;社交账号登录&nbsp;———</view>
 			<view class="flex align-center px-5">
 				<view class="flex-1 flex flex-column align-center justify-center py-2">
@@ -72,20 +73,20 @@
 	export default {
 		data() {
 			return {
-				isCode: false, // 是否验证码登录
+				isCode: false, // 登录还是注册
 				username: '',
 				password: '',
-				phone: '',
-				code: '',
+				repassword: '',
 				codetime: 0
 			}
 		},
 		computed: {
 			// 判断内容为空登录按钮不可用
 			disabled() {
-				if ((this.username === '' || this.password === '')&&(this.phone === '' || this.code === '')) {
+				if ((this.username === '' || this.password === '') && (this.username === '' || this.password === '' || this
+						.repassword === '')) {
 					return false;
-				} 
+				}
 				return true;
 			}
 		},
@@ -99,67 +100,79 @@
 			initForm() {
 				this.username = '';
 				this.password = '';
-				this.phone = '';
-				this.code = '';
+				this.repassword = '';
 			},
-			// 获取验证码
-			getCode(){
-				// 节流
-				if (this.codetime > 0) return;
-				// 验证手机号
-				if (!this.validate(this.phone,'phone')) {
-					uni.showToast({
-						title:'手机号格式不正确',
-						icon:'none'
-					});
-					return false;
-				}
-				this.codetime = 60;
-				let timer = setInterval(()=>{
-					if(this.codetime>=1){
-						this.codetime--
-					}else{
-						this.codetime = 0
-						clearInterval(timer)
+			// 登录按钮
+			onLogin() {
+				uni.request({
+					url: this.$C.baseUrl+'/api/login',
+					method: 'POST',
+					header: { // 请求头
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					data: { // 请求体
+						username: this.username,
+						password: this.password
+					},
+					success: (res) => {
+						if(res.data.status===0) { // 登录成功
+							// 调用vuex的登录处理函数
+							this.$store.commit('login',res.data.token)
+							// 关闭当前页面
+							uni.navigateBack({
+								delta: 1,
+							});
+							uni.showToast({
+								icon: 'none',
+								title: "登录成功！"
+							});
+						} else { // 登录失败
+							uni.showToast({
+								icon: 'none',
+								title: res.data.message
+							})
+						}
 					}
-				},1000);
+				})
 			},
-			// 表单验证
-			validate(data,type){
-				var regPhone = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
-				if (type === 'phone'){
-					return regPhone.test(data);
-				}
-				// 更多验证
-				return true
-			},
-			// 登录
-			submit(){
+			// 注册
+			onRegister() {
 				// 表单验证
-				if (this.isCode){
-					if (!this.validate(this.phone,'phone')) {
-						uni.showToast({
-							title:'手机号格式不正确',
-							icon:'none'
-						});
-						return false;
-					}
+				if (this.password !== this.repassword) {
+					uni.showToast({
+						icon: 'none',
+						title: "两次密码输入不一致"
+					})
+				} else {
+					console.log("what");
+					uni.request({
+						url: this.$C.baseUrl+'/api/register',
+						method: 'POST',
+						header: { // 请求头
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						data: { // 请求体
+							username: this.username,
+							password: this.password
+						},
+						success: function(res) {
+							if(res.data.status===0) { // 注册成功
+								uni.showToast({
+									icon: 'none',
+									title: "注册成功！"
+								})
+								this.isCode = false
+							} else { // 注册失败
+								uni.showToast({
+									icon: 'none',
+									title: res.data.message
+								})
+							}
+						}
+					})
 				}
-				
-				// 提交后端
-				// 登录成功处理
-				uni.setStorage({
-					key: 'token',
-					data: 'ok',
-					success: ()=>{
-						// 关闭当前页面
-						uni.navigateBack({
-							delta: 1,
-						});
-					}
-				});
-
 			}
+
 		}
 	}
 </script>

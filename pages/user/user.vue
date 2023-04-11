@@ -1,9 +1,9 @@
 <template>
 	<view class="user">
-		<template v-if="!isLog">
+		<template v-if="!loginStatus">
 			<view>
-				<empty-page text1="尚未登录，请登录"></empty-page>
-				<button class="mt-3" @click="gotoLogin">立即前往登录</button>
+				<empty-page text1="尚未登录，请先登录"></empty-page>
+				<button class="mt-5 mx-5" @click="gotoLogin">立即前往登录</button>
 			</view>
 		</template>
 		<template v-else>
@@ -44,6 +44,7 @@
 			<!-- 近期动态 -->
 			<view>
 				<view class="tap-title">🌟 近期动态</view>
+				<!-- #ifdef APP -->
 				<view v-for="(item,index) in myList" :key="index">
 					<!-- 文章item公共组件 -->
 					<news-item :item="item" :index="index"></news-item>
@@ -52,6 +53,10 @@
 				</view>
 				<!-- 上拉加载公共组件 -->
 				<load-more :text="loadMore"></load-more>
+				<!-- #endif -->
+				<!-- #ifdef MP-WEIXIN || H5 -->
+				<view class="m-2 text-center">无动态</view>
+				<!-- #endif -->
 			</view>
 		</template>
 	</view>
@@ -60,6 +65,8 @@
 <script>
 	import newsItem from '@/components/common/news-item.vue';
 	import loadMore from '@/components/common/load-more.vue';
+	import {mapState} from 'vuex';
+	
 	export default {
 		components: {
 			newsItem,
@@ -67,7 +74,6 @@
 		},
 		data() {
 			return {
-				isLog: false,
 				userName: 'Rick Henry',
 				loadMore: '上拉加载更多',
 				tapList: [
@@ -116,17 +122,13 @@
 				}, ]
 			}
 		},
-		onShow() {
-			// 检查token,确定登录状态
-			try {
-				const value = uni.getStorageSync('token');
-				if (value==='ok') {
-					console.log(value);
-					this.isLog = true
-				} 
-			} catch (e) {
-				console.log(e.message);
-			}
+		// 同步登录状态
+		computed:{
+			...mapState(['loginStatus','userInfo'])
+		},
+		onLoad() {
+			// 获取登录状态
+			this.$store.dispatch('initUser')
 		},
 		onNavigationBarButtonTap(){
 			this.editUserInfo()
@@ -134,17 +136,26 @@
 		methods: {
 			// 发布动态
 			sendNew() {
-				uni.navigateTo({
-					url: '../add-input/add-input',
-					animationType: 'slide-in-bottom',
-				});
+				if(this.sos) {
+					uni.showToast({
+						icon:'error',
+						title:'该功能已下线'
+					})
+				} else {
+					uni.navigateTo({
+						url: '../add-input/add-input',
+						animationType: 'slide-in-bottom',
+					});
+				}
 			},
 			// 编辑资料
 			editUserInfo(){
-				uni.navigateTo({
-					url: '../user-userInfo/user-userInfo',
-					animationType: 'slide-in-bottom',
-				});
+				
+					uni.navigateTo({
+						url: '../user-userInfo/user-userInfo',
+						animationType: 'slide-in-bottom',
+					});
+				
 			},
 			// 登录
 			gotoLogin(){
